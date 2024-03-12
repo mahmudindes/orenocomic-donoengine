@@ -1,1 +1,3 @@
-# orenocomic-donoengine
+# DonoEngine
+
+Go-based comic catalog backend.

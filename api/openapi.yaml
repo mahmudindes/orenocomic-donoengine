@@ -1,0 +1,3644 @@
+openapi: 3.0.3
+info:
+  title: DonoEngine
+  description: Go-based comic catalog backend.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+tags:
+  - name: Comic
+  - name: Category
+  - name: Tag
+  - name: Language
+  - name: Website
+  - name: Type
+servers:
+  - url: /api/v0
+paths:
+  /comics:
+    get:
+      tags:
+        - Comic
+      summary: List comic.
+      operationId: listComic
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: comic_external
+          in: query
+          description: Filter by comic external values.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Comic list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of comic with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of comic with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Comic'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Comic
+      summary: Add comic.
+      operationId: addComic
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComic'
+        required: true
+      responses:
+        '201':
+          description: Comic added.
+          headers:
+            Location:
+              description: The path of new comic.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comic'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic.
+      operationId: getComic
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comic'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic.
+      operationId: updateComic
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComic'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComic'
+        required: true
+      responses:
+        '200':
+          description: Comic updated.
+          headers:
+            Location:
+              description: The path of updated comic.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Comic'
+        '204':
+          description: Comic unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic.
+      operationId: deleteComic
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/titles:
+    post:
+      tags:
+        - Comic
+      summary: Add comic title.
+      operationId: addComicTitle
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicTitle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicTitle'
+        required: true
+      responses:
+        '201':
+          description: Comic title added.
+          headers:
+            Location:
+              description: The path of new comic title.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTitle'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/titles/{rid}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic title.
+      operationId: getComicTitle
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic title to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic title gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTitle'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic title.
+      operationId: updateComicTitle
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic title to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicTitle'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicTitle'
+        required: true
+      responses:
+        '200':
+          description: Comic title updated.
+          headers:
+            Location:
+              description: The path of updated comic title.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTitle'
+        '204':
+          description: Comic title unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic title.
+      operationId: deleteComicTitle
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic title to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic title deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/covers:
+    post:
+      tags:
+        - Comic
+      summary: Add comic cover.
+      operationId: addComicCover
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicCover'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicCover'
+        required: true
+      responses:
+        '201':
+          description: Comic cover added.
+          headers:
+            Location:
+              description: The path of new comic cover.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCover'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/covers/{rid}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic cover.
+      operationId: getComicCover
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic cover to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic cover gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCover'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic cover.
+      operationId: updateComicCover
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic cover to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicCover'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicCover'
+        required: true
+      responses:
+        '200':
+          description: Comic cover updated.
+          headers:
+            Location:
+              description: The path of updated comic cover.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCover'
+        '204':
+          description: Comic cover unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic cover.
+      operationId: deleteComicCover
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic cover to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic cover deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/synopses:
+    post:
+      tags:
+        - Comic
+      summary: Add comic synopsis.
+      operationId: addComicSynopsis
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicSynopsis'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicSynopsis'
+        required: true
+      responses:
+        '201':
+          description: Comic synopsis added.
+          headers:
+            Location:
+              description: The path of new comic synopsis.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicSynopsis'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/synopses/{rid}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic synopsis.
+      operationId: getComicSynopsis
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic synopsis to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic synopsis gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicSynopsis'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic synopsis.
+      operationId: updateComicSynopsis
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic synopsis to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicSynopsis'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicSynopsis'
+        required: true
+      responses:
+        '200':
+          description: Comic synopsis updated.
+          headers:
+            Location:
+              description: The path of updated comic synopsis.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicSynopsis'
+        '204':
+          description: Comic synopsis unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic synopsis.
+      operationId: deleteComicSynopsis
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic synopsis to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic synopsis deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/externals:
+    post:
+      tags:
+        - Comic
+      summary: Add comic external.
+      operationId: addComicExternal
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicExternal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicExternal'
+        required: true
+      responses:
+        '201':
+          description: Comic external added.
+          headers:
+            Location:
+              description: The path of new comic external.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicExternal'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/externals/{rid}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic external.
+      operationId: getComicExternal
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic external to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic external gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicExternal'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic external.
+      operationId: updateComicExternal
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic external to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicExternal'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicExternal'
+        required: true
+      responses:
+        '200':
+          description: Comic external updated.
+          headers:
+            Location:
+              description: The path of updated comic external.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicExternal'
+        '204':
+          description: Comic external unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic external.
+      operationId: deleteComicExternal
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: rid
+          in: path
+          description: RID of comic external to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic external deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/categories:
+    post:
+      tags:
+        - Comic
+      summary: Add comic category.
+      operationId: addComicCategory
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicCategory'
+        required: true
+      responses:
+        '201':
+          description: Comic category added.
+          headers:
+            Location:
+              description: The path of new comic category.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCategory'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/categories/{typeID}-{categoryCode}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic category.
+      operationId: getComicCategory
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: categoryCode
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic category gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCategory'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic category.
+      operationId: updateComicCategory
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: categoryCode
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicCategory'
+        required: true
+      responses:
+        '200':
+          description: Comic category updated.
+          headers:
+            Location:
+              description: The path of updated comic category.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicCategory'
+        '204':
+          description: Comic category unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic category.
+      operationId: deleteComicCategory
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: categoryCode
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic category deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/tags:
+    post:
+      tags:
+        - Comic
+      summary: Add comic tag.
+      operationId: addComicTag
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicTag'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicTag'
+        required: true
+      responses:
+        '201':
+          description: Comic tag added.
+          headers:
+            Location:
+              description: The path of new comic tag.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTag'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/tags/{typeID}-{tagCode}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic tag.
+      operationId: getComicTag
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: tagCode
+          in: path
+          description: Code of tag.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic tag gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTag'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic tag.
+      operationId: updateComicTag
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: tagCode
+          in: path
+          description: Code of tag.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicTag'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicTag'
+        required: true
+      responses:
+        '200':
+          description: Comic tag updated.
+          headers:
+            Location:
+              description: The path of updated comic tag.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicTag'
+        '204':
+          description: Comic tag unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic tag.
+      operationId: deleteComicTag
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: tagCode
+          in: path
+          description: Code of tag.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic tag deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/relations:
+    post:
+      tags:
+        - Comic
+      summary: Add comic relation.
+      operationId: addComicRelation
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicRelation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicRelation'
+        required: true
+      responses:
+        '201':
+          description: Comic relation added.
+          headers:
+            Location:
+              description: The path of new comic relation.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicRelation'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/relations/{typeID}-{comicCode}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic relation.
+      operationId: getComicRelation
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of comic relation type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: comicCode
+          in: path
+          description: Code of related comic.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic relation gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicRelation'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic relation.
+      operationId: updateComicRelation
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of comic relation type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: comicCode
+          in: path
+          description: Code of related comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicRelation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicRelation'
+        required: true
+      responses:
+        '200':
+          description: Comic relation updated.
+          headers:
+            Location:
+              description: The path of updated comic relation.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicRelation'
+        '204':
+          description: Comic relation unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic relation.
+      operationId: deleteComicRelation
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: typeID
+          in: path
+          description: Type ID of comic relation type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: comicCode
+          in: path
+          description: Code of related comic.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic relation deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/chapters:
+    get:
+      tags:
+        - Comic
+      summary: List comic chapter.
+      operationId: listComicChapter
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Comic chapter list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of comic chapter with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of comic chapter with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ComicChapter'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Comic
+      summary: Add comic chapter.
+      operationId: addComicChapter
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewComicChapter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewComicChapter'
+        required: true
+      responses:
+        '201':
+          description: Comic chapter added.
+          headers:
+            Location:
+              description: The path of new comic chapter.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicChapter'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /comics/{code}/chapters/{cv}:
+    get:
+      tags:
+        - Comic
+      summary: Get comic chapter.
+      operationId: getComicChapter
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic to return.
+          required: true
+          schema:
+            type: string
+        - name: cv
+          in: path
+          description: Chapter[+Version] of comic chapter to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic chapter gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicChapter'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Comic
+      summary: Update comic chapter.
+      operationId: updateComicChapter
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: cv
+          in: path
+          description: Chapter[+Version] of comic chapter to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetComicChapter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetComicChapter'
+        required: true
+      responses:
+        '200':
+          description: Comic chapter updated.
+          headers:
+            Location:
+              description: The path of updated comic chapter.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ComicChapter'
+        '204':
+          description: Comic chapter unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Comic
+      summary: Delete comic chapter.
+      operationId: deleteComicChapter
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic.
+          required: true
+          schema:
+            type: string
+        - name: cv
+          in: path
+          description: Chapter[+Version] of comic chapter to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic chapter deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /categories:
+    get:
+      tags:
+        - Category
+      summary: List category.
+      operationId: listCategory
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Category list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of category with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of category with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Category
+      summary: Add category.
+      operationId: addCategory
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewCategory'
+        required: true
+      responses:
+        '201':
+          description: Category added.
+          headers:
+            Location:
+              description: The path of new category.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /categories/{typeID}-{code}:
+    get:
+      tags:
+        - Category
+      summary: Get category.
+      operationId: getCategory
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Category
+      summary: Update category.
+      operationId: updateCategory
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetCategory'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetCategory'
+        required: true
+      responses:
+        '200':
+          description: Category updated.
+          headers:
+            Location:
+              description: The path of updated category.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '204':
+          description: Category unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Category
+      summary: Delete category.
+      operationId: deleteCategory
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Category deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /categories/{typeID}-{code}/relations:
+    post:
+      tags:
+        - Category
+      summary: Add category relation.
+      operationId: addCategoryRelation
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewCategoryRelation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewCategoryRelation'
+        required: true
+      responses:
+        '201':
+          description: Category relation added.
+          headers:
+            Location:
+              description: The path of new category relation.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRelation'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /categories/{typeID}-{code}/relations/{categoryCode}:
+    get:
+      tags:
+        - Category
+      summary: Get category relation.
+      operationId: getCategoryRelation
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+        - name: categoryCode
+          in: path
+          description: Code of related category.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category relation gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRelation'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Category
+      summary: Update category relation.
+      operationId: updateCategoryRelation
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+        - name: categoryCode
+          in: path
+          description: Code of related category.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetCategoryRelation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetCategoryRelation'
+        required: true
+      responses:
+        '200':
+          description: Category relation updated.
+          headers:
+            Location:
+              description: The path of updated category relation.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CategoryRelation'
+        '204':
+          description: Category relation unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Category
+      summary: Delete category relation.
+      operationId: deleteCategoryRelation
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of category type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of category.
+          required: true
+          schema:
+            type: string
+        - name: categoryCode
+          in: path
+          description: Code of related category.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Category relation deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /tags:
+    get:
+      tags:
+        - Tag
+      summary: List tag.
+      operationId: listTag
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Tag list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of tag with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of tag with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tag'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Tag
+      summary: Add tag.
+      operationId: addTag
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewTag'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewTag'
+        required: true
+      responses:
+        '201':
+          description: Tag added.
+          headers:
+            Location:
+              description: The path of new tag.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /tags/{typeID}-{code}:
+    get:
+      tags:
+        - Tag
+      summary: Get tag.
+      operationId: getTag
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of tag to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Tag
+      summary: Update tag.
+      operationId: updateTag
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of tag to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetTag'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetTag'
+        required: true
+      responses:
+        '200':
+          description: Tag updated.
+          headers:
+            Location:
+              description: The path of updated tag.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tag'
+        '204':
+          description: Tag unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Tag
+      summary: Delete tag.
+      operationId: deleteTag
+      parameters:
+        - name: typeID
+          in: path
+          description: Type ID of tag type.
+          required: true
+          schema:
+            type: integer
+            x-go-type: uint
+        - name: code
+          in: path
+          description: Code of tag to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Tag deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /languages:
+    get:
+      tags:
+        - Language
+      summary: List language.
+      operationId: listLanguage
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Language list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of language with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of language with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Language'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Language
+      summary: Add language.
+      operationId: addLanguage
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewLanguage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewLanguage'
+        required: true
+      responses:
+        '201':
+          description: Language added.
+          headers:
+            Location:
+              schema:
+                type: string
+              description: The path of new language.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /languages/{ietf}:
+    get:
+      tags:
+        - Language
+      summary: Get language.
+      operationId: getLanguage
+      parameters:
+        - name: ietf
+          in: path
+          description: IETF code of language to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Language gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Language
+      summary: Update language.
+      operationId: updateLanguage
+      parameters:
+        - name: ietf
+          in: path
+          description: IETF code of language to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetLanguage'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetLanguage'
+        required: true
+      responses:
+        '200':
+          description: Language updated.
+          headers:
+            Location:
+              description: The path of updated language.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Language'
+        '204':
+          description: Language unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Language
+      summary: Delete language.
+      operationId: deleteLanguage
+      parameters:
+        - name: ietf
+          in: path
+          description: IETF code of language to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Language deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /websites:
+    get:
+      tags:
+        - Website
+      summary: List website.
+      operationId: listWebsite
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Website list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of website with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of website with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Website'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Website
+      summary: Add website.
+      operationId: addWebsite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewWebsite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewWebsite'
+        required: true
+      responses:
+        '201':
+          description: Website added.
+          headers:
+            Location:
+              description: The path of new website.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /websites/{domain}:
+    get:
+      tags:
+        - Website
+      summary: Get website.
+      operationId: getWebsite
+      parameters:
+        - name: domain
+          in: path
+          description: Domain name of website to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Website gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Website
+      summary: Update website.
+      operationId: updateWebsite
+      parameters:
+        - name: domain
+          in: path
+          description: Domain name of website to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetWebsite'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetWebsite'
+        required: true
+      responses:
+        '200':
+          description: Website updated.
+          headers:
+            Location:
+              description: The path of updated website.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Website'
+        '204':
+          description: Website unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Website
+      summary: Delete website.
+      operationId: deleteWebsite
+      parameters:
+        - name: domain
+          in: path
+          description: Domain name of website to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Website deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/categories:
+    get:
+      tags:
+        - Type
+      summary: List category type.
+      operationId: listCategoryType
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Category type list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of category type with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of category type with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Type
+      summary: Add category type.
+      operationId: addCategoryType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+        required: true
+      responses:
+        '201':
+          description: Category type added.
+          headers:
+            Location:
+              description: The path of new category type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/categories/{code}:
+    get:
+      tags:
+        - Type
+      summary: Get category type.
+      operationId: getCategoryType
+      parameters:
+        - name: code
+          in: path
+          description: Code of category type to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Category type gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Type
+      summary: Update category type.
+      operationId: updateCategoryType
+      parameters:
+        - name: code
+          in: path
+          description: Code of category type to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+        required: true
+      responses:
+        '200':
+          description: Category type updated.
+          headers:
+            Location:
+              description: The path of updated category type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        '204':
+          description: Category type unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Type
+      summary: Delete category type.
+      operationId: deleteCategoryType
+      parameters:
+        - name: code
+          in: path
+          description: Code of category type to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Category type deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/tags:
+    get:
+      tags:
+        - Type
+      summary: List tag type.
+      operationId: listTagType
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Tag type list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of tag type with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of tag type with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Type
+      summary: Add tag type.
+      operationId: addTagType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+        required: true
+      responses:
+        '201':
+          description: Tag type added.
+          headers:
+            Location:
+              description: The path of new tag type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/tags/{code}:
+    get:
+      tags:
+        - Type
+      summary: Get tag type.
+      operationId: getTagType
+      parameters:
+        - name: code
+          in: path
+          description: Code of tag type to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Tag type gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Type
+      summary: Update tag type.
+      operationId: updateTagType
+      parameters:
+        - name: code
+          in: path
+          description: Code of tag type to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+        required: true
+      responses:
+        '200':
+          description: Tag type updated.
+          headers:
+            Location:
+              description: The path of updated tag type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        '204':
+          description: Tag type unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Type
+      summary: Delete tag type.
+      operationId: deleteTagType
+      parameters:
+        - name: code
+          in: path
+          description: Code of tag type to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Tag type deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/comic-relations:
+    get:
+      tags:
+        - Type
+      summary: List comic relation type.
+      operationId: listComicRelationType
+      parameters:
+        - name: page
+          in: query
+          description: Page number of results.
+          schema:
+            type: integer
+        - name: limit
+          in: query
+          description: Maximum number of results.
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          description: Sort results returned.
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: Comic relation type list.
+          headers:
+            X-Total-Count:
+              schema:
+                type: integer
+              description: The total count of comic relation type with current filter.
+            X-Pagination-Limit:
+              schema:
+                type: integer
+              description: The last page number of comic relation type with current filter and limit.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    post:
+      tags:
+        - Type
+      summary: Add comic relation type.
+      operationId: addComicRelationType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NewGenericType'
+        required: true
+      responses:
+        '201':
+          description: Comic relation type added.
+          headers:
+            Location:
+              description: The path of new comic relation type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+  /types/comic-relations/{code}:
+    get:
+      tags:
+        - Type
+      summary: Get comic relation type.
+      operationId: getComicRelationType
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic relation type to return.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Comic relation type gets.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        default:
+          $ref: '#/components/responses/Default'
+    patch:
+      tags:
+        - Type
+      summary: Update comic relation type.
+      operationId: updateComicRelationType
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic relation type to update.
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SetGenericType'
+        required: true
+      responses:
+        '200':
+          description: Comic relation type updated.
+          headers:
+            Location:
+              description: The path of updated comic relation type.
+              schema:
+                type: string
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GenericType'
+        '204':
+          description: Comic relation type unmodified.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+        - Type
+      summary: Delete comic relation type.
+      operationId: deleteComicRelationType
+      parameters:
+        - name: code
+          in: path
+          description: Code of comic relation type to delete.
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: Comic relation type deleted.
+        default:
+          $ref: '#/components/responses/Default'
+      security:
+        - BearerAuth: []
+components:
+  schemas:
+    Object:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          x-go-type: uint
+          x-go-name: ID
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+      required:
+        - id
+        - createdAt
+    Comic:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            code:
+              type: string
+            languageID:
+              type: integer
+              nullable: true
+              x-go-type: uint
+            languageIETF:
+              type: string
+              nullable: true
+            titles:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicTitle'
+            covers:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicCover'
+            synopses:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicSynopsis'
+            publishedFrom:
+              type: string
+              format: date-time
+              nullable: true
+            publishedTo:
+              type: string
+              format: date-time
+              nullable: true
+            totalChapter:
+              type: integer
+              nullable: true
+            totalVolume:
+              type: integer
+              nullable: true
+            nsfw:
+              type: integer
+              nullable: true
+              x-go-name: NSFW
+            nsfl:
+              type: integer
+              nullable: true
+              x-go-name: NSFL
+            chapters:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicChapter'
+            externals:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicExternal'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
+            tags:
+              type: array
+              items:
+                $ref: '#/components/schemas/Tag'
+            relations:
+              type: array
+              items:
+                $ref: '#/components/schemas/ComicRelation'
+            additionals:
+              type: object
+              nullable: true
+              x-go-type-skip-optional-pointer: true
+          required:
+            - code
+    NewComic:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        publishedFrom:
+          type: string
+          format: date-time
+          nullable: true
+        publishedTo:
+          type: string
+          format: date-time
+          nullable: true
+        totalChapter:
+          type: integer
+          nullable: true
+        totalVolume:
+          type: integer
+          nullable: true
+        nsfw:
+          type: integer
+          nullable: true
+          x-go-name: NSFW
+        nsfl:
+          type: integer
+          nullable: true
+          x-go-name: NSFL
+        #additionals:
+        #  type: object
+        #  nullable: true
+        #  x-go-type-skip-optional-pointer: true
+    SetComic:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        publishedFrom:
+          type: string
+          format: date-time
+          nullable: true
+        publishedTo:
+          type: string
+          format: date-time
+          nullable: true
+        totalChapter:
+          type: integer
+          nullable: true
+        totalVolume:
+          type: integer
+          nullable: true
+        nsfw:
+          type: integer
+          nullable: true
+          x-go-name: NSFW
+        nsfl:
+          type: integer
+          nullable: true
+          x-go-name: NSFL
+        #additionals:
+        #  type: object
+        #  nullable: true
+        #  x-go-type-skip-optional-pointer: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    ComicTitle:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            rid:
+              type: string
+              x-go-name: RID
+            languageID:
+              type: integer
+              x-go-type: uint
+            languageIETF:
+              type: string
+            title:
+              type: string
+            synonym:
+              type: boolean
+              nullable: true
+            romanized:
+              type: boolean
+              nullable: true
+          required:
+            - rid
+            - languageID
+            - languageIETF
+            - title
+    NewComicTitle:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        title:
+          type: string
+        synonym:
+          type: boolean
+          nullable: true
+        romanized:
+          type: boolean
+          nullable: true
+      required:
+        - title
+    SetComicTitle:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        synonym:
+          type: boolean
+          nullable: true
+        romanized:
+          type: boolean
+          nullable: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    ComicCover:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            rid:
+              type: string
+              x-go-name: RID
+            websiteID:
+              type: integer
+              x-go-type: uint
+            websiteDomain:
+              type: string
+            relativeURL:
+              type: string
+            priority:
+              type: integer
+              nullable: true
+          required:
+            - rid
+            - websiteID
+            - websiteDomain
+            - relativeURL
+    NewComicCover:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        websiteID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        websiteDomain:
+          type: string
+          nullable: true
+        relativeURL:
+          type: string
+        priority:
+          type: integer
+          nullable: true
+      required:
+        - relativeURL
+    SetComicCover:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        websiteID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        websiteDomain:
+          type: string
+          nullable: true
+        relativeURL:
+          type: string
+          nullable: true
+        priority:
+          type: integer
+          nullable: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    ComicSynopsis:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            rid:
+              type: string
+              x-go-name: RID
+            languageID:
+              type: integer
+              x-go-type: uint
+            languageIETF:
+              type: string
+            synopsis:
+              type: string
+            version:
+              type: string
+              nullable: true
+            romanized:
+              type: boolean
+              nullable: true
+          required:
+            - rid
+            - languageID
+            - languageIETF
+            - synopsis
+    NewComicSynopsis:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        synopsis:
+          type: string
+        version:
+          type: string
+          nullable: true
+        romanized:
+          type: boolean
+          nullable: true
+      required:
+        - synopsis
+    SetComicSynopsis:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        languageID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        languageIETF:
+          type: string
+          nullable: true
+        synopsis:
+          type: string
+          nullable: true
+        version:
+          type: string
+          nullable: true
+        romanized:
+          type: boolean
+          nullable: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    ComicExternal:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            rid:
+              type: string
+              x-go-name: RID
+            websiteID:
+              type: integer
+              x-go-type: uint
+            websiteDomain:
+              type: string
+            relativeURL:
+              type: string
+              nullable: true
+            official:
+              type: boolean
+              nullable: true
+          required:
+            - rid
+            - websiteID
+            - websiteDomain
+    NewComicExternal:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        websiteID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        websiteDomain:
+          type: string
+          nullable: true
+        relativeURL:
+          type: string
+          nullable: true
+        official:
+          type: boolean
+          nullable: true
+    SetComicExternal:
+      type: object
+      properties:
+        rid:
+          type: string
+          nullable: true
+          x-go-name: RID
+        websiteID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        websiteDomain:
+          type: string
+          nullable: true
+        relativeURL:
+          type: string
+          nullable: true
+        official:
+          type: boolean
+          nullable: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    ComicCategory:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        categoryID:
+          type: integer
+          x-go-type: uint
+        categoryTypeID:
+          type: integer
+          x-go-type: uint
+        categoryCode:
+          type: string
+      required:
+        - createdAt
+        - categoryID
+        - categoryTypeID
+        - categoryCode
+    NewComicCategory:
+      type: object
+      properties:
+        categoryID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryTypeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryTypeCode:
+          type: string
+          nullable: true
+        categoryCode:
+          type: string
+          nullable: true
+    SetComicCategory:
+      type: object
+      properties:
+        categoryID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryTypeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryTypeCode:
+          type: string
+          nullable: true
+        categoryCode:
+          type: string
+          nullable: true
+    ComicTag:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        tagID:
+          type: integer
+          x-go-type: uint
+        tagTypeID:
+          type: integer
+          x-go-type: uint
+        tagCode:
+          type: string
+      required:
+        - createdAt
+        - tagID
+        - tagTypeID
+        - tagCode
+    NewComicTag:
+      type: object
+      properties:
+        tagID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        tagTypeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        tagTypeCode:
+          type: string
+          nullable: true
+        tagCode:
+          type: string
+          nullable: true
+    SetComicTag:
+      type: object
+      properties:
+        tagID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        tagTypeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        tagTypeCode:
+          type: string
+          nullable: true
+        tagCode:
+          type: string
+          nullable: true
+    ComicRelation:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        typeID:
+          type: integer
+          x-go-type: uint
+        typeCode:
+          type: string
+        comicID:
+          type: integer
+          x-go-type: uint
+        comicCode:
+          type: string
+      required:
+        - createdAt
+        - typeID
+        - comicID
+        - comicCode
+    NewComicRelation:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        comicID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        comicCode:
+          type: string
+          nullable: true
+    SetComicRelation:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        comicID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        comicCode:
+          type: string
+          nullable: true
+    ComicChapter:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            chapter:
+              type: string
+            version:
+              type: string
+              nullable: true
+            volume:
+              type: string
+              nullable: true
+            releasedAt:
+              type: string
+              format: date-time
+          required:
+            - chapter
+            - releasedAt
+    NewComicChapter:
+      type: object
+      properties:
+        chapter:
+          type: string
+        version:
+          type: string
+          nullable: true
+        volume:
+          type: string
+          nullable: true
+        releasedAt:
+          type: string
+          format: date-time
+      required:
+        - chapter
+        - releasedAt
+    SetComicChapter:
+      type: object
+      properties:
+        chapter:
+          type: string
+          nullable: true
+        version:
+          type: string
+          nullable: true
+        volume:
+          type: string
+          nullable: true
+        releasedAt:
+          type: string
+          format: date-time
+          nullable: true
+        setNull:
+          type: array
+          items:
+            type: string
+          x-go-type-skip-optional-pointer: true
+    Category:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            typeID:
+              type: integer
+              x-go-type: uint
+            typeCode:
+              type: string
+            code:
+              type: string
+            name:
+              type: string
+            relations:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryRelation'
+          required:
+            - typeID
+            - typeCode
+            - code
+            - name
+    NewCategory:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        code:
+          type: string
+        name:
+          type: string
+      required:
+        - code
+        - name
+    SetCategory:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    CategoryRelation:
+      type: object
+      properties:
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+          nullable: true
+        categoryID:
+          type: integer
+          x-go-type: uint
+        categoryCode:
+          type: string
+      required:
+        - createdAt
+        - categoryID
+        - categoryCode
+    NewCategoryRelation:
+      type: object
+      properties:
+        categoryID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryCode:
+          type: string
+          nullable: true
+    SetCategoryRelation:
+      type: object
+      properties:
+        categoryID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        categoryCode:
+          type: string
+          nullable: true
+    Tag:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            typeID:
+              type: integer
+              x-go-type: uint
+            typeCode:
+              type: string
+            code:
+              type: string
+            name:
+              type: string
+          required:
+            - typeID
+            - typeCode
+            - code
+            - name
+    NewTag:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        code:
+          type: string
+        name:
+          type: string
+      required:
+        - code
+        - name
+    SetTag:
+      type: object
+      properties:
+        typeID:
+          type: integer
+          nullable: true
+          x-go-type: uint
+        typeCode:
+          type: string
+          nullable: true
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    Language:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            ietf:
+              type: string
+              x-go-name: IETF
+            name:
+              type: string
+          required: 
+            - ietf
+            - name
+    NewLanguage:
+      type: object
+      properties:
+        ietf:
+          type: string
+          x-go-name: IETF
+        name:
+          type: string
+      required: 
+        - ietf
+        - name
+    SetLanguage:
+      type: object
+      properties:
+        ietf:
+          type: string
+          nullable: true
+          x-go-name: IETF
+        name:
+          type: string
+          nullable: true
+    Website:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            domain:
+              type: string
+            name:
+              type: string
+          required: 
+            - domain
+            - name
+    NewWebsite:
+      type: object
+      properties:
+        domain:
+          type: string
+        name:
+          type: string
+      required: 
+        - domain
+        - name
+    SetWebsite:
+      type: object
+      properties:
+        domain:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    GenericType:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/Object'
+        - type: object
+          properties:
+            code:
+              type: string
+            name:
+              type: string
+          required: 
+            - code
+            - name
+    NewGenericType:
+      type: object
+      properties:
+        code:
+          type: string
+        name:
+          type: string
+      required: 
+        - code
+        - name
+    SetGenericType:
+      type: object
+      properties:
+        code:
+          type: string
+          nullable: true
+        name:
+          type: string
+          nullable: true
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties: 
+            status:
+              type: string
+            message:
+              type: string
+          required:
+            - status
+            - message
+      required:
+        - error
+  responses:
+    Default:
+      description: Unexpected error.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
