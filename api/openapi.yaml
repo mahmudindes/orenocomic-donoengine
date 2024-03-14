@@ -2762,35 +2762,53 @@ components:
         code:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: code
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         publishedFrom:
           type: string
           format: date-time
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: publishedFrom
         publishedTo:
           type: string
           format: date-time
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: publishedTo
         totalChapter:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: totalChapter
         totalVolume:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: totalVolume
         nsfw:
           type: integer
           nullable: true
           x-go-name: NSFW
+          x-oapi-codegen-extra-tags:
+            form: nsfw
         nsfl:
           type: integer
           nullable: true
           x-go-name: NSFL
+          x-oapi-codegen-extra-tags:
+            form: nsfl
         #additionals:
         #  type: object
         #  nullable: true
@@ -2801,35 +2819,53 @@ components:
         code:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: code
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         publishedFrom:
           type: string
           format: date-time
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: publishedFrom
         publishedTo:
           type: string
           format: date-time
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: publishedTo
         totalChapter:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: totalChapter
         totalVolume:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: totalVolume
         nsfw:
           type: integer
           nullable: true
           x-go-name: NSFW
+          x-oapi-codegen-extra-tags:
+            form: nsfw
         nsfl:
           type: integer
           nullable: true
           x-go-name: NSFL
+          x-oapi-codegen-extra-tags:
+            form: nsfl
         #additionals:
         #  type: object
         #  nullable: true
@@ -2839,6 +2875,8 @@ components:
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     ComicTitle:
       type: object
       allOf:
@@ -2873,21 +2911,33 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         title:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: title
         synonym:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: synonym
         romanized:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: romanized
       required:
         - title
     SetComicTitle:
@@ -2897,27 +2947,41 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         title:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: title
         synonym:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: synonym
         romanized:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: romanized
         setNull:
           type: array
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     ComicCover:
       type: object
       allOf:
@@ -2949,18 +3013,28 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         websiteID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: websiteID
         websiteDomain:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: websiteDomain
         relativeURL:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: relativeURL
         priority:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: priority
       required:
         - relativeURL
     SetComicCover:
@@ -2970,24 +3044,36 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         websiteID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: websiteID
         websiteDomain:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: websiteDomain
         relativeURL:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: relativeURL
         priority:
           type: integer
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: priority
         setNull:
           type: array
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     ComicSynopsis:
       type: object
       allOf:
@@ -3022,21 +3108,33 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         synopsis:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: synopsis
         version:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: version
         romanized:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: romanized
       required:
         - synopsis
     SetComicSynopsis:
@@ -3046,27 +3144,41 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         languageID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: languageID
         languageIETF:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: languageIETF
         synopsis:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: synopsis
         version:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: version
         romanized:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: version
         setNull:
           type: array
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     ComicExternal:
       type: object
       allOf:
@@ -3098,19 +3210,29 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         websiteID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: websiteID
         websiteDomain:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: websiteDomain
         relativeURL:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: relativeURL
         official:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: official
     SetComicExternal:
       type: object
       properties:
@@ -3118,24 +3240,36 @@ components:
           type: string
           nullable: true
           x-go-name: RID
+          x-oapi-codegen-extra-tags:
+            form: rid
         websiteID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: websiteID
         websiteDomain:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: websiteDomain
         relativeURL:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: relativeURL
         official:
           type: boolean
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: official
         setNull:
           type: array
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     ComicCategory:
       type: object
       properties:
@@ -3166,16 +3300,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryID
         categoryTypeID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryTypeID
         categoryTypeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryTypeCode
         categoryCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryCode
     SetComicCategory:
       type: object
       properties:
@@ -3183,16 +3325,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryID
         categoryTypeID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryTypeID
         categoryTypeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryTypeCode
         categoryCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryCode
     ComicTag:
       type: object
       properties:
@@ -3223,16 +3373,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: tagID
         tagTypeID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: tagTypeID
         tagTypeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: tagTypeCode
         tagCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: tagCode
     SetComicTag:
       type: object
       properties:
@@ -3240,16 +3398,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: tagID
         tagTypeID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: tagTypeID
         tagTypeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: tagTypeCode
         tagCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: tagCode
     ComicRelation:
       type: object
       properties:
@@ -3282,16 +3448,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         comicID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: comicID
         comicCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: comicCode
     SetComicRelation:
       type: object
       properties:
@@ -3299,16 +3473,24 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         comicID:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: comicID
         comicCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: comicCode
     ComicChapter:
       type: object
       allOf:
@@ -3334,15 +3516,23 @@ components:
       properties:
         chapter:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: chapter
         version:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: version
         volume:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: volume
         releasedAt:
           type: string
           format: date-time
+          x-oapi-codegen-extra-tags:
+            form: releasedAt
       required:
         - chapter
         - releasedAt
@@ -3352,21 +3542,31 @@ components:
         chapter:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: chapter
         version:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: version
         volume:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: volume
         releasedAt:
           type: string
           format: date-time
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: releasedAt
         setNull:
           type: array
           items:
             type: string
           x-go-type-skip-optional-pointer: true
+          x-oapi-codegen-extra-tags:
+            form: setNull,omitempty
     Category:
       type: object
       allOf:
@@ -3398,13 +3598,21 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         code:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: name
       required:
         - code
         - name
@@ -3415,15 +3623,23 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         code:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: name
     CategoryRelation:
       type: object
       properties:
@@ -3450,9 +3666,13 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryID
         categoryCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryCode
     SetCategoryRelation:
       type: object
       properties:
@@ -3460,9 +3680,13 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: categoryID
         categoryCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: categoryCode
     Tag:
       type: object
       allOf:
@@ -3490,13 +3714,21 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         code:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: name
       required:
         - code
         - name
@@ -3507,15 +3739,23 @@ components:
           type: integer
           nullable: true
           x-go-type: uint
+          x-oapi-codegen-extra-tags:
+            form: typeID
         typeCode:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: typeCode
         code:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: name
     Language:
       type: object
       allOf:
@@ -3536,8 +3776,12 @@ components:
         ietf:
           type: string
           x-go-name: IETF
+          x-oapi-codegen-extra-tags:
+            form: ietf
         name:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: name
       required: 
         - ietf
         - name
@@ -3548,9 +3792,13 @@ components:
           type: string
           nullable: true
           x-go-name: IETF
+          x-oapi-codegen-extra-tags:
+            form: ietf
         name:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: name
     Website:
       type: object
       allOf:
@@ -3569,8 +3817,12 @@ components:
       properties:
         domain:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: domain
         name:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: name
       required: 
         - domain
         - name
@@ -3580,9 +3832,13 @@ components:
         domain:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: domain
         name:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: name
     GenericType:
       type: object
       allOf:
@@ -3601,8 +3857,12 @@ components:
       properties:
         code:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
+          x-oapi-codegen-extra-tags:
+            form: name
       required: 
         - code
         - name
@@ -3612,9 +3872,13 @@ components:
         code:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: code
         name:
           type: string
           nullable: true
+          x-oapi-codegen-extra-tags:
+            form: name
     Error:
       type: object
       properties:
