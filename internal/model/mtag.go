@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	copy(TagTypeOrderByAllow, GenericOrderByAllow)
+	TagTypeOrderByAllow = append(TagTypeOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
@@ -92,7 +92,7 @@ func (m SetTagType) Validate() error {
 }
 
 func init() {
-	copy(TagOrderByAllow, GenericOrderByAllow)
+	TagOrderByAllow = append(TagOrderByAllow, GenericOrderByAllow...)
 }
 
 const (

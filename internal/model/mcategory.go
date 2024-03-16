@@ -8,7 +8,7 @@ import (
 )
 
 func init() {
-	copy(CategoryTypeOrderByAllow, GenericOrderByAllow)
+	CategoryTypeOrderByAllow = append(CategoryTypeOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
@@ -92,7 +92,7 @@ func (m SetCategoryType) Validate() error {
 }
 
 func init() {
-	copy(CategoryOrderByAllow, GenericOrderByAllow)
+	CategoryOrderByAllow = append(CategoryOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
@@ -210,7 +210,7 @@ func (m SetCategory) Validate() error {
 }
 
 func init() {
-	copy(CategoryRelationOrderByAllow, GenericOrderByAllow)
+	CategoryRelationOrderByAllow = append(CategoryRelationOrderByAllow, GenericOrderByAllow...)
 }
 
 const (

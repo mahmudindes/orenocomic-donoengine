@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	copy(WebsiteOrderByAllow, GenericOrderByAllow)
+	WebsiteOrderByAllow = append(WebsiteOrderByAllow, GenericOrderByAllow...)
 }
 
 const (

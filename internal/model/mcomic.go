@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	copy(ComicOrderByAllow, GenericOrderByAllow)
+	ComicOrderByAllow = append(ComicOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
@@ -171,14 +171,14 @@ func (m SetComic) Validate() error {
 }
 
 func init() {
-	copy(ComicTitleOrderByAllow, GenericOrderByAllow)
-	copy(ComicCoverOrderByAllow, GenericOrderByAllow)
-	copy(ComicSynopsisOrderByAllow, GenericOrderByAllow)
-	copy(ComicExternalOrderByAllow, GenericOrderByAllow)
-	copy(ComicCategoryOrderByAllow, GenericOrderByAllow)
-	copy(ComicTagOrderByAllow, GenericOrderByAllow)
-	copy(ComicRelationTypeOrderByAllow, GenericOrderByAllow)
-	copy(ComicRelationOrderByAllow, GenericOrderByAllow)
+	ComicTitleOrderByAllow = append(ComicTitleOrderByAllow, GenericOrderByAllow...)
+	ComicCoverOrderByAllow = append(ComicCoverOrderByAllow, GenericOrderByAllow...)
+	ComicSynopsisOrderByAllow = append(ComicSynopsisOrderByAllow, GenericOrderByAllow...)
+	ComicExternalOrderByAllow = append(ComicExternalOrderByAllow, GenericOrderByAllow...)
+	ComicCategoryOrderByAllow = append(ComicCategoryOrderByAllow, GenericOrderByAllow...)
+	ComicTagOrderByAllow = append(ComicTagOrderByAllow, GenericOrderByAllow...)
+	ComicRelationTypeOrderByAllow = append(ComicRelationTypeOrderByAllow, GenericOrderByAllow...)
+	ComicRelationOrderByAllow = append(ComicRelationOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
@@ -960,7 +960,7 @@ func (m SetComicRelation) Validate() error {
 }
 
 func init() {
-	copy(ComicChapterOrderByAllow, GenericOrderByAllow)
+	ComicChapterOrderByAllow = append(ComicChapterOrderByAllow, GenericOrderByAllow...)
 }
 
 const (
